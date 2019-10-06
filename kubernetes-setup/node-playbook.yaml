@@ -25,18 +25,20 @@
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
       state: present
 
-  - name: Install docker and its dependecies
-    apt: 
-      name: "{{ packages }}"
+  - name: Install docker-ce
+    apt:
       state: present
-      update_cache: yes
-    vars:
-      packages:
-      - docker-ce 
-      - docker-ce-cli 
-      - containerd.io
-    notify:
-      - docker status
+      force: true
+      name:
+      - "docker-ce=17.03.3~ce-0~ubuntu-xenial"
+
+  - name: Install docker-ce-cli
+    apt:
+      state: present
+      force: true
+      name:
+      - "docker-ce-cli=5:18.09.7~3-0~ubuntu-xenial"
+      - "containerd.io"
 
   - name: Add vagrant user to docker group
     user:
@@ -98,7 +100,7 @@
 
   - name: Copy the join command to server location
     copy: 
-      src: join-command 
+      src: join-command.sh 
       dest: /tmp/join-command.sh 
       mode: '0777'
 

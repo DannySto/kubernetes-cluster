@@ -25,24 +25,27 @@
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
       state: present
 
-  - name: Install docker and its dependecies
-    apt: 
-      name: "{{ packages }}"
+  - name: Install docker-ce
+    apt:
       state: present
-      update_cache: yes
-    vars:
-      packages:
-      - docker-ce 
-      - docker-ce-cli 
-      - containerd.io
-    notify:
-      - docker status
+      force: true
+      name:
+      - "docker-ce=17.03.3~ce-0~ubuntu-xenial"
+
+  - name: Install docker-ce-cli
+    apt:
+      state: present
+      force: true
+      name:
+      - "docker-ce-cli=5:18.09.7~3-0~ubuntu-xenial"
+      - "containerd.io"
 
   - name: Add vagrant user to docker group
     user:
       name: vagrant
       group: docker
-# Step 2.2: Kubelet will not start if the system has swap enabled, so we are disabling swap using the below code.
+      
+# Kubelet will not start if the system has swap enabled, so we are disabling swap using the below code.
   - name: Remove swapfile from /etc/fstab
     mount:
       name: "{{ item }}"
@@ -132,13 +135,14 @@
 
   - name: Copy join command to local file
     # local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
-    shell: kubeadm token create --print-join-command >> ./join-command.sh
+    shell: kubeadm token create --print-join-command > ./join-command.sh
     become: true
 
   - name: Store file on ansible master
     fetch:
       src: /home/vagrant/join-command.sh
-      dest: ./join-command.sh
+      dest: join-command.sh
+      flat: yes
 
 # Setup a handler for checking Docker daemon using the below code.
   handlers:
