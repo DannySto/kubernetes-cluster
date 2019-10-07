@@ -1,42 +1,43 @@
-- name: Initialize the Kubernetes cluster using kubeadm
-  command: kubeadm init --apiserver-advertise-address="192.168.50.10" --apiserver-cert-extra-sans="192.168.50.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
+---
+  - name: Initialize the Kubernetes cluster using kubeadm
+    command: kubeadm init --apiserver-advertise-address="192.168.50.10" --apiserver-cert-extra-sans="192.168.50.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
 
-#   Setup the kube config file for the vagrant user to access the Kubernetes cluster using the below code.
-- name: Create ./kube dir for vagrant user 
-  file:
-    path: /home/vagrant/.kube
-    state: directory
-    owner: vagrant
-    group: vagrant
-    mode: '0764'
+  #   Setup the kube config file for the vagrant user to access the Kubernetes cluster using the below code.
+  - name: Create ./kube dir for vagrant user 
+    file:
+      path: /home/vagrant/.kube
+      state: directory
+      owner: vagrant
+      group: vagrant
+      mode: '0764'
 
-- name: Copy kube config
-  copy:
-    src: /etc/kubernetes/admin.conf
-    dest: /home/vagrant/.kube/config
-    owner: vagrant
-    group: vagrant
-    remote_src: yes
-    mode: '0644'
+  - name: Copy kube config
+    copy:
+      src: /etc/kubernetes/admin.conf
+      dest: /home/vagrant/.kube/config
+      owner: vagrant
+      group: vagrant
+      remote_src: yes
+      mode: '0644'
 
-# Setup the container networking provider and the network policy engine using the below code.
-- name: Install calico pod network
-  become: false
-  command: kubectl create -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
+  # Setup the container networking provider and the network policy engine using the below code.
+  - name: Install calico pod network
+    become: false
+    command: kubectl create -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
 
-- name: Copy join command to local file
-  shell: kubeadm token create --print-join-command > /tmp/join-command.sh
-  become: true
+  - name: Copy join command to local file
+    shell: kubeadm token create --print-join-command > /tmp/join-command.sh
+    become: true
 
-- name: Store file on ansible master
-  fetch:
-    src: /tmp/join-command.sh
-    dest: join-command.sh
-    flat: yes
+  - name: Store file on ansible master
+    fetch:
+      src: /tmp/join-command.sh
+      dest: join-command.sh
+      flat: yes
 
-- name: Copy join command to local file
-  shell: kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
+  - name: Copy join command to local file
+    shell: kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
 
-handlers:
-  - name: docker status
-    service: name=docker state=started
+  # handlers:
+  #   - name: docker status
+  #     service: name=docker state=started

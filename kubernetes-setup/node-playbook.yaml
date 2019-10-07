@@ -1,12 +1,13 @@
-- name: Copy the join command to server location
-  copy: 
-    src: join-command.sh 
-    dest: /tmp/join-command.sh 
-    mode: '0777'
+---
+  - name: Copy the join command to server location
+    copy: 
+      src: join-command.sh 
+      dest: /tmp/join-command.sh 
+      mode: '0777'
 
-- name: Join the node to cluster
-  command: sh /tmp/join-command.sh
+  - name: Join the node to cluster
+    command: sh /tmp/join-command.sh
 
-handlers:
-  - name: docker status
-    service: name=docker state=started
+  # handlers:
+  #   - name: docker status
+  #     service: name=docker state=started
