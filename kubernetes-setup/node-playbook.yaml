@@ -44,7 +44,7 @@
     user:
       name: vagrant
       group: docker
-# Step 2.2: Kubelet will not start if the system has swap enabled, so we are disabling swap using the below code.
+# Kubelet will not start if the system has swap enabled, so we are disabling swap using the below code.
   - name: Remove swapfile from /etc/fstab
     mount:
       name: "{{ item }}"
@@ -57,7 +57,7 @@
   - name: Disable swap
     command: swapoff -a
     when: ansible_swaptotal_mb > 0
-# Step 2.3: Installing kubelet, kubeadm and kubectl using the below code.
+# Installing kubelet, kubeadm and kubectl using the below code.
   - name: Add an apt signing key for Kubernetes
     apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -79,6 +79,7 @@
         - kubelet 
         - kubeadm 
         - kubectl
+
   - name: Create kubelet file
     file:
       path: /etc/default/kubelet

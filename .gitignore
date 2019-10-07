@@ -1,6 +1,7 @@
 # ignore generated ansible retry files,
-/kubernetes-cluster/*.retry
+*.retry
+*.sh
 /kubernetes-cluster/join-command.sh
 # ignore .vagrant dir
 /.vagrant
-/.git
+.gitignore
