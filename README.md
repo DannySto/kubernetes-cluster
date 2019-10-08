@@ -32,3 +32,8 @@ Installing kubelet, kubeadm and kubectl using the below code.
 ##kube/config
 Run following commando for generating .kube/config file for external management:
 kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
+
+
+Source:
+https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/
+
