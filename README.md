@@ -1,2 +1,34 @@
 # kubernetes-cluster
 Multi node kubernetes-cluster
+
+###Prerequisites
+- Vagrant should be installed on your machine.
+- Oracle VirtualBox can be used as a Vagrant provider or make use of similar providers as described in Vagrant’s official documentation.
+- Ansible should be installed in your machine. Refer to the Ansible installation guide for platform specific installation.
+
+This playbook will be install the following packages, and then adding a user named “vagrant” to the “docker” group. 
+
+- docker-ce
+- docker-ce-cli
+- containerd.io
+
+Kubelet will not start if the system has swap enabled, so we are disabling swap using the below code.
+Installing kubelet, kubeadm and kubectl using the below code.
+ Initialize the Kubernetes cluster with kubeadm using the below code (applicable only on master node).
+ Setup the kube config file for the vagrant user to access the Kubernetes cluster using the below code.
+
+	Accessing master
+	$ vagrant ssh k8s-master
+	vagrant@k8s-master:~$ kubectl get nodes
+	NAME         STATUS   ROLES    AGE     VERSION
+	k8s-master   Ready    master   18m     v1.13.3
+	node-1       Ready    <none>   12m     v1.13.3
+	node-2       Ready    <none>   6m22s   v1.13.3
+	
+	$ ## Accessing nodes
+	$ vagrant ssh node-1
+	$ vagrant ssh node-2
+
+##kube/config
+Run following commando for generating .kube/config file for external management:
+kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
