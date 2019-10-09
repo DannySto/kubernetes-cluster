@@ -1,0 +1,40 @@
+---
+- hosts: cluster
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  tasks:
+
+  - name: apt-get update
+    apt:
+        update-cache: yes
+        cache_valid_time: 86400 #One day
+        autoremove: yes
+        purge: yes
+
+  - name: apt-get upgrade
+    apt:
+        upgrade:  "yes"
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+        
+  - name: Check if reboot is required
+    stat:
+        path: /var/run/reboot-required
+    register: reboot_required_file
+
+  - name: Prompt for rebooting
+    pause:
+        prompt: "Press ENTER to reboot {{ item }} now, or Ctrl+C to abort."
+    when: "'reboot_required_file' in hostvars[item] and hostvars[item]['reboot_required_file'].stat.exists"
+    with_items: "{{ play_hosts }}"
+
+  - name: Rebooting machine
+    reboot:
+    when: reboot_required_file.stat.exists
+
+  - name: Setupauthorized key upload
+    authorized_key: 
+        user: vagrant
+        key: "{{ lookup('file', '~/.keys/vagrant.pub') }}"
+
