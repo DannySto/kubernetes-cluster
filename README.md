@@ -1,7 +1,13 @@
 # kubernetes-cluster
-Multi node kubernetes-cluster
+Multi node kubernetes-cluster which can be used for Certified Kubernetes Administrator training
 
-###Prerequisites
+[Certified Kubernetes Administrator ](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
+
+
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kubernetes_logo_without_workmark.svg/1200px-Kubernetes_logo_without_workmark.svg.png "Kubernetes")
+
+
+### Prerequisites
 - Vagrant should be installed on your machine.
 - Oracle VirtualBox can be used as a Vagrant provider or make use of similar providers as described in Vagrant’s official documentation.
 - Ansible should be installed in your machine. Refer to the Ansible installation guide for platform specific installation.
@@ -29,11 +35,13 @@ Installing kubelet, kubeadm and kubectl using the below code.
 	$ vagrant ssh node-1
 	$ vagrant ssh node-2
 
-##kube/config
+## kube/config
 Run following commando for generating .kube/config file for external management:
 kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
 
 
 Source:
-https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/
+<https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/>
+
+
 
