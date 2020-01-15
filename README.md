@@ -23,10 +23,10 @@ Installing kubelet, kubeadm and kubectl using the below code.
  Initialize the Kubernetes cluster with kubeadm using the below code (applicable only on master node).
  Setup the kube config file for the vagrant user to access the Kubernetes cluster using the below code.
 
-	Accessing master
+	##Accessing master
 	$ vagrant ssh k8s-master
 	
-	$ ## Accessing nodes
+	## Accessing nodes
 	$ vagrant ssh node-1
 	$ vagrant ssh node-2
 	
