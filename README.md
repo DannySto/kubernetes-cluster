@@ -25,18 +25,19 @@ Installing kubelet, kubeadm and kubectl using the below code.
 
 	Accessing master
 	$ vagrant ssh k8s-master
+	
+	$ ## Accessing nodes
+	$ vagrant ssh node-1
+	$ vagrant ssh node-2
+	
 	vagrant@k8s-master:~$ kubectl get nodes
 	NAME         STATUS   ROLES    AGE     VERSION
 	k8s-master   Ready    master   18m     v1.13.3
 	node-1       Ready    <none>   12m     v1.13.3
 	node-2       Ready    <none>   6m22s   v1.13.3
-	
-	$ ## Accessing nodes
-	$ vagrant ssh node-1
-	$ vagrant ssh node-2
 
 ## kube/config
-Run following commando for generating .kube/config file for external management:
+Log into the k8s-master and run following commando for generating .kube/config file for external management:
 kubectl config view --flatten --minify > /home/vagrant/cluster-cert.txt
 
 
